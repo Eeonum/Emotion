@@ -14,9 +14,13 @@ def integrate(N, w_ph, f, w_at, a, b, g, psi0, tlist, gamma, solver):
              0.5 * w_at[j] * (b.dag()[j] * b[j] - a.dag()[j] * a) + \
              g[j] / sqrt(N) * (f.dag() * a.dag()[j] * b[j] + b.dag()[j] * a[j] * f)
 
-
-    c_op_list =[]
+    c_op_list = []
 
     # evolve and calculate expectation values
-    if solver=="me":
-        result=mesolve(H, psi0, tlist, c_op_list, sz_list)
+    if solver == "me":
+        result = mesolve(H, psi0, tlist, c_op_list, sz_list)
+    elif solver == "mc":
+        ntraj = 250
+        result = mcsolve(H, psi0, tlist, c_op_list, sz_list, ntraj)
+
+    return result.expect
